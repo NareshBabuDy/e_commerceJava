@@ -44,9 +44,11 @@ Steps:
 9. Used "Date" class for handling date for orders.
 10. Handled exceptions for invalid choices.
 
+Work in Progress
     1. Admin Home 
     * View Categories
         - Remove Category 
     * View Products 
         - Edit Product 
-        - Delete Product 
+        - Delete Product
+    * Checkout
