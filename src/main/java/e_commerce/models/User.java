@@ -1,30 +1,18 @@
 package e_commerce.models;
 
-import java.util.ArrayList;
-
 public class User {
     private int id;
+    private String name;
     private String email;
     private String password;
-    private String name;
     private Role role;
-    private Cart userCart;
-    private ArrayList<Order> userOrders;
 
-    public Cart getUserCart() {
-        return userCart;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUserCart(Cart userCart) {
-        this.userCart = userCart;
-    }
-
-    public ArrayList<Order> getUserOrders() {
-        return userOrders;
-    }
-
-    public void setUserOrders(ArrayList<Order> userOrders) {
-        this.userOrders = userOrders;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -33,6 +21,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -49,21 +45,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

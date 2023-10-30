@@ -1,5 +1,5 @@
 package e_commerce.models;
 
 public enum Role {
-    ADMIN, USER
+    USER,ADMIN
 }

@@ -1,81 +1,88 @@
 package e_commerce.controller;
 
-import e_commerce.App;
 import e_commerce.controller.impl.IAuthController;
 import e_commerce.models.Role;
 import e_commerce.models.User;
 import e_commerce.utils.AppException;
-import e_commerce.utils.StringUtil;
+import e_commerce.utils.AppInput;
+import e_commerce.utils.StringUtils;
+import e_commerce.view.AuthPage;
 import e_commerce.view.LoginPage;
 import e_commerce.view.RegisterPage;
-import e_commerce.utils.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class AuthController implements IAuthController {
+import static e_commerce.utils.AppInput.enterString;
+import static e_commerce.utils.FileUtils.getCredentialsFile;
+import static e_commerce.utils.UserUtils.setLoggedInUser;
+import static e_commerce.utils.Utils.println;
 
+public class AuthController implements IAuthController {
+    private final AuthPage authPage;
     private final HomeController homeController;
-    private final AppController appController;
     private final LoginPage loginPage;
     private final RegisterPage registerPage;
-    private final ProductController productController;
 
-    public AuthController(AppController appController) {
-        this.appController = appController;
+
+    public AuthController() {
         homeController = new HomeController();
-        loginPage = new LoginPage();
+        authPage = new AuthPage();
         registerPage = new RegisterPage();
-        productController = new ProductController();
+        loginPage = new LoginPage();
     }
 
-    @Override
     public void authMenu() {
-        appController.printAuthMenu();
+        authPage.logingway();
         int choice;
         try {
-            choice = AppInput.enterInt(StringUtil.ENTER_CHOICE);
-            if (choice == 1) {
-                login();
-            } else if (choice == 2) {
-                register();
-            } else {
-                invalidChoice(new AppException(StringUtil.INVALID_CHOICE));
+            choice = AppInput.enterInt(StringUtils.ENTER_CHOICE);
+            switch (choice) {
+                case 1:
+                    login();
+                    break;
+                case 2:
+                    register();
+                    break;
+                default:
+                    invalidChoice(new AppException(StringUtils.INVALID_CHOICE));
+                    break;
             }
         } catch (AppException appException) {
             invalidChoice(appException);
         }
+
     }
 
     @Override
-    public void login() throws AppException {
+    public void login() {
         String email, password;
-        email = AppInput.enterString(StringUtil.ENTER_EMAIL);
-        password = AppInput.enterString(StringUtil.ENTER_PASSWORD);
-
-        User user = validateUser(email, password);
+        email = enterString(StringUtils.ENTER_EMAIL);
+        password = enterString(StringUtils.ENTER_PASSWORD);
+        User user = validate(email, password);
         if (user != null) {
+            setLoggedInUser(user);
             homeController.printMenu();
         } else {
             loginPage.printInvalidCredentials();
             authMenu();
         }
-    }
 
+    }
 
     @Override
     public void register() {
         String name, email, password, c_password;
-        name = AppInput.enterString(StringUtil.ENTER_NAME);
-        email = AppInput.enterString(StringUtil.ENTER_EMAIL);
-        password = AppInput.enterString(StringUtil.ENTER_PASSWORD);
-        c_password = AppInput.enterString(StringUtil.ENTER_PASSWORD_AGAIN);
+        name = enterString(StringUtils.ENTER_NAME);
+        email = enterString(StringUtils.ENTER_EMAIL);
+        password = enterString(StringUtils.ENTER_PASSWORD);
+        c_password = enterString(StringUtils.ENTER_PASSWORD_AGAIN);
 
         if (password.equals(c_password)) {
             try {
-                FileWriter csvWriter = new FileWriter(FileUtil.getCredentialsFile(), true);
+                FileWriter csvWriter = new FileWriter(getCredentialsFile(), true);
                 int id = (int) (Math.random() * 100);
                 csvWriter.append("\n");
                 csvWriter.append(id + "," + name + "," + email + "," + password);
@@ -91,14 +98,9 @@ public class AuthController implements IAuthController {
         authMenu();
     }
 
-    @Override
-    public void logout() {
-
-    }
-
-    private User validateUser(String email, String password) {
+    public User validate(String email, String password) {
         try {
-            Scanner scanner = new Scanner(FileUtil.getCredentialsFile());
+            Scanner scanner = new Scanner(getCredentialsFile());
             while (scanner.hasNext()) {
                 String value = scanner.next().trim();
                 if (!value.startsWith("id")) {
@@ -124,8 +126,15 @@ public class AuthController implements IAuthController {
         return null;
     }
 
+    @Override
+    public void logout() {
+
+    }
+
+
     private void invalidChoice(AppException e) {
-        Utils.println(e.getMessage());
+        println(e.getMessage());
         authMenu();
     }
+
 }

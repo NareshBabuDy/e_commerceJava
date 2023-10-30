@@ -1,14 +1,11 @@
 package e_commerce.models;
 
-import e_commerce.utils.AppException;
-
 public class Product {
     private int id;
     private String title;
-    private String description;
     private double price;
-    private int stocks;
-    private Category category;
+    private int stock;
+    private String category;
 
     public int getId() {
         return id;
@@ -26,38 +23,27 @@ public class Product {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) throws AppException {
-        if (price <= 0) {
-            throw new AppException("Price Cannot be negative");
-        }
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public int getStocks() {
-        return stocks;
+    public int getStock() {
+        return stock;
     }
 
-    public void setStocks(int stocks) {
-        this.stocks = stocks;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 }
