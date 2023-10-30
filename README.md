@@ -1,9 +1,11 @@
 # e_commerceJava
+
+
 Challenges Faced:
-In the Initial period I Struggled to load the product from the csv file.
-Then I tried to increase the count in the cart of the specific product.
 
-
+* In the Initial period I Struggled to load the product from the csv file.
+* Then I faced an issue in increasing the count in the cart of the specific product.
+ 
 
 1. Login - Existing User and Admin
 2. Register - New User
